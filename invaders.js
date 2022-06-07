@@ -1,22 +1,27 @@
 class Enemy {
-    x;
-    y;
-    size;
-    hp;
+  x;
+  y;
+  size;
+  hp;
 
-    constructor(x, y, size, hp) {
-        this.x = x;
-        this.y = y;
-        this.size = size;
-        this.hp = hp;
-    }
+  constructor(x,y,size,hp) {
+      this.x = x;
+      this.y = y;
+      this.size = size;
+      this.hp = hp;
+  }
 
-    draw(context) {
-        
-    }
+  draw(context) {
+      context.draw.Image(enemy1,this.x,this.y)
+  }
+
+
+
 }
 
-// new Enemy(10, 20, 5, 50);
+// new Enemyy(10,20,5,10);
+const enemy1 = new Image();
+enemy1.src = "enemy1.png";
 
 class Bullet {
     x;
@@ -83,6 +88,7 @@ let player = {
 };
 
 let bullets = [];
+let enemys = [];
 
 let direction = {
     left: false,
@@ -106,6 +112,7 @@ function update() {
         bullet.update();
     }
 
+
     draw();
 }
 
@@ -127,11 +134,19 @@ function draw() {
         const bullet = bullets[index];
         bullet.draw(context);
     }
+    for(let index = 0; index < enemys.length; index++) {
+            const enemy = enemys[index];
+        enemy.draw(context)
+        }
+
+
 
 }
 
 function setup() {
     draw();
+    let enemy = new Enemy(20,20,10,50);
+    enemys.push(enemy)
 }
 
 function keyDown(event) {
