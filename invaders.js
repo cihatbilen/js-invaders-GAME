@@ -6,28 +6,36 @@ class Enemy {
   y;
   size;
   hp;
+  cooldown;
 
   constructor(x,y,size,hp) {
       this.x = x;
       this.y = y;
       this.size = size;
       this.hp = hp;
-  }
-
-  draw(context) {
-      context.draw.Image(enemy1,this.x,this.y)
+      this.cooldown = 0;
   }
 
 
 
     draw(context) {
-        context.drawImage(enemy1, this.x, this.y);
+        context.drawImage(enemy1, this.x, this.y,this.size,this.size);
     }
+
+    update() {
+      if (this.cooldown == 0){
+        this.x += Math.random() * 10 - 5 ;
+        this.y += Math.random() * 10 - 5 ;
+        this.cooldown= 19;
+      }
+      this.cooldown-=1;
+    }
+
+
+
+
 }
 
-// new Enemyy(10,20,5,10);
-const enemy1 = new Image();
-enemy1.src = "enemy1.png";
 
 class Bullet {
     x;
@@ -104,15 +112,45 @@ let direction = {
     shoot: false,
 };
 
-function update() {
-    player.update();
+// function update() {
+//     player.update();
+//
+//
+//     if(direction.shoot) {
+//         let bullet = player.shoot();
+//         bullets.push( bullet );
+//     }
+//
+//     // update()
+//     for(let index = 0; index < bullets.length; index++) {
+//         const bullet = bullets[index];
+//         bullet.update();
+//     }
+//
+//     for(let index = 0; index < enemies.length; index++) {
+//         const enemy = enemies[index];
+//         enemy.update();
+//     }
+//
+//
+//     draw();
+// }
 
-    if(direction.shoot) {
-        let bullet = player.shoot();
-        bullets.push( bullet );
+function update() {
+    player.update()
+
+    if(direction.shoot){
+    let bullet = player.shoot();
+    bullets.push(player.shoot());
+    }
+    // update()
+
+    for (let index = 0; index < enemies.length; index++) {
+        const element = enemies[index];
+        element.update();
+
     }
 
-    // update()
     for(let index = 0; index < bullets.length; index++) {
         const bullet = bullets[index];
         bullet.update();
@@ -121,6 +159,9 @@ function update() {
 
     draw();
 }
+
+
+
 
 function draw() {
     let canvas = document.getElementById('invaders-canvas');
@@ -140,11 +181,6 @@ function draw() {
         const bullet = bullets[index];
         bullet.draw(context);
     }
-    for(let index = 0; index < enemys.length; index++) {
-            const enemy = enemys[index];
-        enemy.draw(context)
-        }
-
 
 
     for(let index = 0; index < enemies.length; index++) {
@@ -152,11 +188,12 @@ function draw() {
         enemy.draw(context);
     }
 
+
 }
 
 function setup() {
     draw();
-    let enemy = new Enemy(20, 20, 10, 50);
+    let enemy = new Enemy(20, 20, 50, 50);
     enemies.push(enemy);
 }
 
